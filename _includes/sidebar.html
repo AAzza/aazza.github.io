@@ -1,0 +1,38 @@
+<div class="sidebar">
+  <div class="container sidebar-sticky">
+    <div class="sidebar-about">
+      <h1>{{ site.title }}</h1>
+      <p class="lead">{{ site.description }}</p>
+    </div>
+
+    <ul class="sidebar-nav">
+      <li class="sidebar-nav-item{% if page.title == "Home" %} active{% endif %}">
+        <a href="/">Home</a>
+      </li>
+
+      {% comment %}
+        The code below dynamically generates a sidebar nav of pages with
+        `layout: page` in the front-matter. See readme for usage.
+      {% endcomment %}
+
+      {% assign pages_list = site.pages %}
+      {% for node in pages_list %}
+        {% if node.title != null %}
+          {% if node.layout == "page" %}
+            <li class="sidebar-nav-item{% if page.url == node.url %} active{% endif %}">
+              <a href="{{ node.url }}">{{ node.title }}</a>
+            </li>
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+
+      <li class="sidebar-nav-item"><a href="/atom.xml">RSS</a></li>
+    </ul>
+
+    <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
+        <img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
+    </a>
+    <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">This blog</span> by
+    <a xmlns:cc="http://creativecommons.org/ns#" href="http://aazza.github.io" property="cc:attributionName" rel="cc:attributionURL">Nataliia Uvarova</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Attribution-ShareAlike 4.0 International License</a>.
+  </div>
+</div>

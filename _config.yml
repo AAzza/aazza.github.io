@@ -1,0 +1,18 @@
+# Dependencies
+markdown:         redcarpet
+pygments:         true
+
+# Permalinks
+permalink:        pretty
+
+# Setup
+title:            AAzza's log
+tagline:          '/var/log/adventures.log | grep AAzza'
+description:      '/var/log/adventures.log | grep AAzza'
+url:              http://aazza.github.io
+
+author:
+  name:           'Nataliia Uvarova'
+  url:            https://github.com/AAzza
+
+paginate:         5
