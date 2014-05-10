@@ -36,7 +36,7 @@ I managed to speak to complete strangers :)
 
 ### about finding the project
 There should be some clever advises about how to select the project etc.
-If you need some, there are really good (post)[http://anteaya.info/blog/2013/03/29/suggestions-for-gnome-opw-applicants/]. But
+If you need some, there are really good [post](http://anteaya.info/blog/2013/03/29/suggestions-for-gnome-opw-applicants/). But
 I was so lucky to skip it all (and I definetely have no time). For me it was like
 
 - filter list of participating organizations for use of Python
