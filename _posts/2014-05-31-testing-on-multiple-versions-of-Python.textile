@@ -1,0 +1,58 @@
+---
+layout: post
+title: "Testing on multiple versions of Python"
+---
+
+Adding support to another version of Python requires proper testing on all supporting Python platforms. The changes you make most likely will break something and will not work for older versions.
+
+Of course, OpenStack has configured Jenkins that will test your code under different Python versions. But it is really inconvenient when you try to find tricky fix, that will work and for Python 2.6 and ideally all versions, up until recent 3.4. Nobody wants to clean-up the commit and commit message just to determine, that your changes fail under 2.6. As an additional problem is that my favourite OS - ArchLinux - uses py27 and py34, so was missing two major versions to test - py26 and py34.
+
+Of course, obvious solution is to use virtual machine to test the changes. So now I am experimenting using Ubuntu 12.04, managed by Vagrant. In addition to preinstalled py27 by using @ppa:fkrull/deadsnakes@ I have py26, py33 and py34 installed. Mentor asked me to test changes for PyPy too, so one more member appeared in the family using @ppa:pypy/ppa@ - PyPy2.3.
+
+Except well-known problems with unicode/bytestring, iterators, sometimes incompatibilities are minor, and therefore harder to find. Here is example for you.
+
+Trying to run Marconi server under the Python 3.4 (as you remember ArchLinux etc) I got simple problem: it fails during log configuration, giving something similar to:
+
+bc. ...
+File "/usr/lib64/python3.4/logging/__init__.py", line 178, in _checkLevel
+    raise ValueError("Unknown level: %r" % level)
+ValueError: Unknown level: 'Level WARN'
+
+
+After checking in IPython for different versions of Python, I knew what was the problem. It was pretty simple. It appeared that since Python 3.4 @logging.getLevelName@ works only as expected - returns _levelname_ for level, not vice versa.
+
+bc.. # in py < 3.4
+logging.getLevelName(10)
+> 'DEBUG'
+logging.getLevelName('DEBUG')
+> 10
+
+# in py3.4
+logging.getLevelName(10)
+> 'DEBUG'
+logging.getLevelName('DEBUG')
+> 'Level DEBUG'
+
+p. But why does someone actually need to use it to get integer code by level name?  Because in Python 2.6 there is a difference whether you setting level as integer code or as string name.
+
+bc.. # in py26
+logger = logging.getLogger()
+logger.setLevel('DEBUG')
+logger.level
+> 'DEBUG'
+logger.setLevel(10)
+logger.level
+> '10'
+
+# in py > 2.6
+logger = logging.getLogger()
+logger.setLevel('DEBUG')
+logger.level
+> 10
+logger.setLevel(10)
+logger.level
+> 10
+
+p. The problem is simple, but I just wanted to clarify my understanding. After some investigation I found that changes was introduced in this "commit":http://bugs.python.org/issue18046. To find this I actually needed to do blame of CPython's repository. It is that kind of change, that is not reported in 'What's new in Python 3.x' and even is not listed in full changelog of changes.
+
+It is why testing on _all_ versions of Python you want to support is critical - you cannot know where the problem could come from.
