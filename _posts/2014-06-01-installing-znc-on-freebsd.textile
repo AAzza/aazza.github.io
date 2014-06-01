@@ -1,0 +1,61 @@
+---
+layout: post
+title: Installing ZNC on FreeBSD
+date: 2014-06-01 21:41:00 +0200
+---
+If you chat in IRC more or less frequently, you definitely should use IRC bouncer. ZNC is one of the most advanced and popular.  And as there could not be too many manuals in the internet -- in this post I want to store the report of the installation (though, it is quite simple).  In the text below ZNC is ZNC 1.2 and OS is FreeBSD 10.0-RELEASE-p1.
+
+h3. Install ZNC on FreeBSD
+
+I prefer to install everything than can be installed in native to OS way, in native to OS way.
+
+_If you want to build the ZNC yourself you can find sources at "ZNC site":http://znc.in_
+
+Install it like any other program
+
+bc. cd /usr/ports/irc/znc
+make install clean
+
+or if you use portmaster, then just type:
+
+bc. portmaster -d irc/znc
+
+h3. Configure the system
+
+Add this line to your @/etc/rc.conf@ to autostart znc.
+
+bc. znc_enable="YES"
+# to change default config dir and user add also next lines
+# znc_conf_dir="/usr/local/etc/znc"
+# znc_user="znc"
+
+Create user for ZNC with @nologin@ shell and nonexistent directory:
+
+bc. pw adduser znc -d /nonexistent -s /usr/sbin/nologin -c "ZNC user"
+
+Create directory for config (if you changed the path in @rc.conf@, don't forget to change it here)
+
+bc. mkdir /usr/local/etc/znc
+chown znc /usr/local/etc/znc
+
+h3. Creating config for ZNC
+
+The most important step left is to create the config file for your ZNC.  It is better to start with interactive config generator.
+
+bc. su -m znc -c "znc --makeconf --datadir=/usr/local/etc/znc"
+
+When asked, better enable the @webadmin@ module, that will simplify the configuration later.
+
+h3. Start ZNC
+
+bc. service znc start
+# or
+/usr/local/etc.rc/znc start
+
+If you enable webadmin module, you can acess it on the @http(s):://server_ip:port@. The port is the same you selected for IRC connections to listen on.
+
+h3. If something is not working
+
+* If you enable SSL, you should enable it on client also and access webadmin via _https_.
+* Don' forget to open the port in the firewall.
+* If server is running, but users can't connect, try to enable @adminlog@ module, it will log attempts to login. It log file is empty, maybe recheck the firewall?
