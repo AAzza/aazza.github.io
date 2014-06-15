@@ -1,0 +1,28 @@
+---
+layout: post
+title: "OPW, Python 3: How to choose what to fix"
+ddate: 2014-06-15 16:15:01 +0300
+---
+
+After several changes were merged, it is good time to talk about the overall roadmap of the process.
+
+Marconi has good comprehensive test suite, and if it didn't have one, then first step would be to write it. Of course having tests passing for Python 3 is not guarantee for total compatibility with Python 3 (since passing tests is not sufficient condition). But if you see failing tests, you should have very strong feeling in your stomach, that something is not working right.
+
+h4. Number of fixed tests is bad indicator of patch importance
+
+On the start of internship, from all 725 tests only 123 were passing on py33, after first patch -- 126, after second -- 395 and so on.
+
+Naive thought could be that first change is less important, than second. It added only 3 passing tests, whereas the second gave +169. But actually they are equally fundamental, whereas
+some of the later patches, that add many passing tests, could be much more trivial.
+
+First fix deals with problem, that sqlalchemy's binary field accept bytes, not strings ("review":https://review.openstack.org/97096). Basically all tests that write to database, failed. After eliminating this problem, all other different incompatibilities became visible.  One of which -- the problem with decoding json from http request/response, since their bodies are also represented as bytes -- was fixed in the second patch ("review":https://review.openstack.org/94642).
+
+It appeared, that for 126 tests, these two problems were the only problems, and thus they become passing after second fix. But this doesn't make second patch more or less important.
+
+h4. Try to fix errors by type, rather then by module
+
+If you fix problems by type (for example, connected with strings or iterators or datetime), rather than by module (for example, fix queues, then messages, then claims etc.), you have more chances to see better solution. You see all occurrences of the problem, all corner cases and thus your solution will tend to be more general, rather than several small in-point fixes.
+
+h4. More you see the error in logs, earlier you should fix it
+
+These massive errors could hide others. For example, some basic class cannot be initiated and thus all tests are failing (or that problem with any write to database giving error).  Before start fixing some class of errors, you want to get as much occurrences of it as possible, so better to start fixing the one, that already has a lot of examples.
