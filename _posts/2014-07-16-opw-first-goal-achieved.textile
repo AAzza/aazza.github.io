@@ -1,0 +1,26 @@
+---
+layout: post
+title: "OPW: First goal achieved"
+date: 2014-07-16 18:20:00 +0200
+---
+Some time ago I achieved the first and most important goal of my internship: all tests are now passing for Python 3 and the py33-gate is now voting. Since then, there were no problems with Python 3 for Marconi and hopefully it will remain so. The only missing dependency is python-memcached, that is used for caching and thus not totally blocking usage.
+
+There were 7 commits merged in total:
+
+* "Add separate requirements file for Python 3":https://review.openstack.org/94642
+* "Fix sqlalchemy storage driver for Python 3":https://review.openstack.org/95504
+* "Fix handling of request/response body for Python 3":https://review.openstack.org/97096
+* "Small fixes in storage drivers for Python 3":https://review.openstack.org/98214
+* "Fix tests to be Python 3 compatible":https://review.openstack.org/100087
+* "Make storage.utils.keyify py3k compatible":https://review.openstack.org/100084
+* "Fix Python 3 leftovers":https://review.openstack.org/101448
+
+with the "last commit":https://review.openstack.org/101709 to make gate voting.
+
+The overall impression from the work done: Python 3 is even more explicit, then Python 2.
+
+The remaining time till August 18, I plan to spend doing several different activities:
+
+* propose changes to other OpenStack projects to help them with Python 3 support (mostly I plan to target Oslo and Keystone).
+* do something unrelated to Python 3 for OpenStack/Marconi.
+* help other interns that are working on new storage and transport drivers for Marconi to make their changes Python 3 compatible.
