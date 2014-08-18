@@ -1,0 +1,180 @@
+---
+layout: post
+title: "Generating sequence of histograms using gnuplot"
+date: 2014-08-18 16:52:00 +0300
+use_excerpt: True
+---
+
+The fun project for today is to generate a sequence of plots using one gnuplot file.
+The input file contains following data:
+
+bc. A 5
+B 7
+...
+C 4
+D 8
+
+On the first image we want only the first record to be presented, on the second - the first two, on the last - the full dataset. The resulting sequence of images combined to GIF file looks like this:
+
+!/posts_static/gnuplot_sequence_of_histograms/result.gif!
+
+<!--more-->
+
+h3. Step 1: Produce last image from the full file
+
+On the first step we generate one histogram from the whole dataset (it is the last image from the sequence).
+
+There are two options how you can execute gnuplot commands:
+
+* run them from interactive console (just run gnuplot without any parameters to enter this mode).
+* save them to file and run with @gnuplot file.gplot@.
+
+Former is better for tests and one-time plots and latter --- for scripts that should be run automatically.
+
+Before actual plotting we need to specify some parameters i.e. style. Then we specify how the plot should be displayed - should it be opened in separate window or saved to file. We want resulting images to be in files, so we use @pngcairo@ terminal.
+
+bc. set style data histogram
+set style fill solid border -1
+set terminal pngcairo enhanced font "arial,8" fontscale 1.0 size 700, 480
+set output "output.png"
+
+Now we are ready to do plotting: we use data from second column of @input.dat@ file, with the first column as labels for X axis.
+
+bc. plot "input.dat" using 2:xtic(1)
+
+We can even do some simple processing on the data, like inverting it:
+
+bc. plot "input.dat" using (-$2):xtic(1)
+
+!/posts_static/gnuplot_sequence_of_histograms/full_unstyled.png!
+
+h3. Step 2: Tweak the plot
+
+Now lets modify how plot looks.
+
+First add title to it:
+
+bc. set title "Very simple histogram"
+
+Then tweak the boxwidth:
+
+bc. set boxwidth 0.9
+
+To set the color, first, create corresponding line style (we created line style 1):
+
+bc. set style line 1 lt 1 lc rgb "blue"
+
+And then use it when plotting:
+
+bc. plot "input.dat" using 2:xtic(1) ls 1
+
+As you can see gnuplot automatically shifts Y axis, so C bar is not visible. If you want Y axis to start from zero instead, specify @yrange@:
+
+bc. set yrange [0:*]
+
+Resulting image after all modifications is shown below.
+
+!/posts_static/gnuplot_sequence_of_histograms/full.png!
+
+h3. Step 3: Learn about the loop
+
+To limit the number of rows used from the file, we can use @every@ option of @plot@ command. In general, @every@ command allows you to specify what part of the input file you want to use.
+
+bc. plot "input.dat" every A:B:C:D:E:F
+
+where:
+
+bc. A: line increment
+B: data block increment
+C: The first line
+D: The first data block
+E: The last line
+F: The last data block
+
+So to plot only the first three lines use following command:
+
+bc. plot 'input.dat' every ::::3 using 2:xtic(1) ls 1
+
+Since gnuplot 4.6 you can use @do for@ loop for repeated actions, in our case - to draw several files:
+
+bc. do for [t=0:3] {
+    output_file = sprintf('output_%03d.png', t)
+    set output output_file
+    plot input_file every ::::t using 2:xtic(1) notitle ls 1
+}
+
+Before actual plotting we generate unique filename for each output image, based on the format string.
+
+h3. Step 4: Fix the axes scales
+
+We almost done with our generation, but produced images don't look consistent, the axes scales is adapted for each image, and the resulting GIF-file will not look good.
+For example, that is how the histogram build from two records look like.
+
+!/posts_static/gnuplot_sequence_of_histograms/unscaled_01.png!
+
+To fix this we can use a hack: first draw resulting image with all lines to empty terminal, store the axes parameters values and then use these axes to draw real images. To do this we add next code after histogram style setup, but before the actual drawing in a loop:
+
+bc. set terminal unknown
+# ask gnuplot to save xrange and yrange
+set xrange [] writeback
+set yrange [0:] writeback
+plot input_file using 2:xtic(1), input_file using (-$3):xtic(1)
+set terminal pngcairo enhanced font "arial,8" fontscale 1.0 size 700, 480
+# use saved ranges
+set xrange restore
+set yrange restore
+
+Now the same image looks properly scaled with respect to future bars:
+
+!/posts_static/gnuplot_sequence_of_histograms/scaled_01.png!
+
+h3. Step 5: Hack to pass parameters to gnuplot file
+
+Actually, you cannot pass parameters to gnuplot script. But if you really-really want, you can.
+Why you can want to pass parameters in the first place? For example, if you want to reuse the same gnuplot file for different scripts, and some filenames should be different.
+
+Unfortunately, gnuplot cannot get total lines in the file (which is upper limit for our loop), so we should specify it by ourselves. But instead of hard coding it in the file itself, it is better to ask user to provide it.
+
+To simulate parameters you can use combination of two mechanisms:
+
+* executing arbitrary gnuplot expressions before script start-up with passing @-e "command"@ parameter. And, you guess it, we can use it, to execute variable assignment expression.
+
+bc. gnuplot -e "size=3" -e "input_file='stats.dat'" -e "output_file_format='super_histogram_%03d.png'" histograms.gplot
+
+* and you even can have default values, if parameters are not provided, by adding check in the beginning of the script for variable existence:
+
+bc. if (!exists("output_file_format")) output_file_format = "output_%03d.png"
+if (!exists("input_file")) input_file = "input.dat"
+
+h3. Results
+
+The resulting @histograms.gplot@ file is:
+
+bc. if (!exists("output_file_format")) output_file_format = "output_%03d.png"
+if (!exists("input_file")) input_file = "input.dat"
+set title "Very simple histogram"
+set style data histogram
+set style fill solid border -1
+set boxwidth 0.9
+set terminal unknown
+set xrange [] writeback
+set yrange [0:] writeback
+plot input_file using 2:xtic(1)
+set terminal pngcairo enhanced font "arial,8" fontscale 1.0 size 700, 480
+set xrange restore
+set yrange restore
+set style line 1 lt 1 lc rgb "green"
+do for [t=0:size] {
+    output_file = sprintf(output_file_format, t)
+    set output output_file
+    plot input_file every ::::t using 2:xtic(1) notitle ls 1
+}
+
+Running it using next command:
+
+bc. gnuplot -p -e "size=3" -e "input_file='stats.dat'" -e "output_file_format='super_histograms_%03d.png'" histograms.gplot
+
+It will produce a sequence of files, that can be then combined to GIF, using e.g.
+ImageMagick with next command:
+
+bc. convert -delay 15 super_histograms_*.png -loop 0 histogram.gif

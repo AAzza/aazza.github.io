@@ -2,8 +2,11 @@
 layout: post
 title: Installing ZNC on FreeBSD
 date: 2014-06-01 21:41:00 +0200
+use_excerpt: True
 ---
 If you chat in IRC more or less frequently, you definitely should use IRC bouncer. ZNC is one of the most advanced and popular.  And as there could not be too many manuals in the internet -- in this post I want to store the report of the installation (though, it is quite simple).  In the text below ZNC is ZNC 1.2 and OS is FreeBSD 10.0-RELEASE-p1.
+
+<!--more-->
 
 h3. Install ZNC on FreeBSD
 

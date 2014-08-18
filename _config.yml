@@ -16,3 +16,4 @@ author:
   url:            https://github.com/AAzza
 
 paginate:         5
+excerpt_separator: '<!--more-->'
