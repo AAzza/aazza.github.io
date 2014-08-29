@@ -1,0 +1,32 @@
+---
+layout: post
+title: "OPW: Importance of communication (as a wrap-up for internship)"
+date: 2014-08-29 12:20:00 +0200
+use_excerpt: True
+---
+
+The internship ended a week ago, but honestly I didn't notice it - I as contributed to OpenStack, as plan to do it later.  I see it as most important outcome of the OPW program: a bunch of people will continue to help the world of free and open software.
+
+Today I want to discuss about importance of communications and person-to-person openness, when working in such unusual configuration: remote, distributed around the world team. Only few teammates you will ever meet face to face on different conferences.
+
+<!--more-->
+
+First lets talk about distributed team and about timezones.
+
+Working in different timezones was not a problem, such situation was even an advantage. Most of the team I'm working with is based in the USA and I'm from Europe. So morning for me --- night for them, afternoon for me --- daytime for them etc.
+
+I managed to work with following schedule: productive coding session in the morning, while everything is quiet: almost no discussion in the IRC, no comments on the reviews. After the first track of work I could have several hours of rest, cook some food etc.  And at 4pm there was another session of the work: more social one - problems discussion, reviews, questions.
+
+I don't say, that there are no problems, they are. But unusual situation can lead to interesting opportunities, not only limitations.
+
+But one time this schema didn't work well.
+
+After completing the proposal earlier and having some rest for the wedding, I tried to return to the work again and finish internship doing something else. On the task we chose with the mentor I supposed to work in close collaboration with another person. I could hardly understood the task and its progress, although other participant tried to keep me updated. Each morning, when it should the most productive period - I was full of doubts, if what I was doing was actually what was required to do. It killed motivation almost to zero.
+
+Another problem was that there were a lot of interesting tasks around, that I wanted and knew I could do. But I was feeling guilty, that I was doing current task badly, it was impossible to take something more.
+
+One day I just tired of such situation and wrote email to the mentor honestly describing the problem. And --- _boom!_ --- nothing bad happened - we just decided, that if it was not productive setup, it was worth to change it.
+
+So I want to ask any OPW applicant or intern that will read this post: be open and transparent with your mentor and don't hesitate to discuss problems with people that can solve them.
+
+And the last - many thanks to my mentor Flavio Percoco (flaper87) for support during the internship.
