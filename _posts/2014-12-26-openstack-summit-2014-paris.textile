@@ -1,0 +1,35 @@
+---
+layout: post
+title: "OpenStack Summit 2014 Paris: my story"
+date: 2014-11-26 16:52:00 +0200
+use_excerpt: True
+---
+
+This post is last from the sequence related to the internship at OpenStack as part of the Outreach Program for Woman from Gnome. I had a chance to visit OpenStack Summit in the Paris  in November and here is short summary of what I saw there.
+
+_This post should have appeared a month ago, but three university projects took all the words from my head and only now I have enough time to finish it._
+
+<!--more-->
+
+It was the first OpenStack Summit for me and the impression is a little bit confusing. I met the team I worked with, listened to some talks and participated in breakfast with Woman of OpenStack, but also  wondered about scale and enterprisiness of OpenStack. Let me explain in more details each point.
+
+
+h3. Understanding OpenStack
+
+OpenStack is huge. You can guess it watching reviews appearing in the Gerrit one by one, emails coming to the mailing list almost without pauses. Even amount of projects inside OpenStack should give a clue. But before the summit I had no idea how really big it is. Only seeing the full Grand Amphitheater of the _Palais de Congres_ and walking by dozens of booths of OpenStack sponsors gave understanding of the real scale of it.
+
+But not only OpenStack feels big, it is also very enterprise. Surely the specificity of the domain determines its usage by big companies. To use and create software for building clouds --- it is very serious. But not everything related to big enterprises feels _enterprisy_, but everything that need to be explained with tons of buzzwords is. Only few of companies providing advanced network or storage facilities for OpenStack clouds could explain their difference from the competitors without using bunch of non-sense words.
+
+h3. The talks
+
+The most useful and impressive talks I attend here were talks by John Dickinson (@notmyname) about Swift: both the "Swift 101":https://www.youtube.com/watch?v=6wh1QD7nQxo and "Building Applications with Swift: The Swift Developer On-Ramp":https://www.youtube.com/watch?v=rAGjrqiuoC8.  Due to the talks and the book, after this summit for me Swift is the most understandable component of OpenStack.
+
+Although it is useful to listen to talks mostly I attended hands-on sessions. Usual talks you could listen later, but hands-on sessions gives you opportunity to play with something you hardly will play. In my case it was Neutron configuration --- since I have only laptop with 4GB of RAM, it is impossible to me to try OpenStack in multi-node configuration with network setup. The "Networking Hands-on Lab":https://www.youtube.com/watch?v=wp7EEYin_I0 provides some insights for me, how networking in OpenStack is working and how its configuration might look like.
+
+h3. Meet-up with the team
+
+In addition to main conference, there was Design Session. During the internship I was working with "Zaqar":https://wiki.openstack.org/wiki/Zaqar team and was particularly interested in discussing its future for next iteration. It was novel experience to make such kind of decisions face to face. In this setup many problems were solved faster and resolutions are reached easier. Though I will not argue that this face-to-face collaboration is much better than remote one. Except for natural advantages of remove for OpenStack --- that it is the only possible way in open-source distributed development, there is one other. Despite that it is much _easier_ to discuss in the real world, the discussion is more _argumented_ in the remote fashion. People have time to check their statements and not rely on their memory. The one should have "fast mind" and a lot of experience and knowledge to build thoughtful discussion.
+
+h3. Woman of OpenStack
+
+And the last interesting part was participation in the breakfast organized by Woman of OpenStack. The event aims the discussion actions that should be taken by the group to solve the problems more effectively. All agreed that the most important step should be good communication as between group members as for newcomers. Before only communication medium used was LinkedIn group, which has many drawbacks: starting from need to be registered on the LinkedIn to surprise that it is actually used as main medium. The proper medium should be persistent and easy to find. I was glad to see the first real result of that discussion --- the appearance of the mailing list for the group.
